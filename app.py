@@ -5,37 +5,92 @@ from PIL import Image
 from gtts import gTTS
 from fertilizer_data import fertilizer_data
 import tempfile
+import google.generativeai as genai
 
-# --------------------------------
-# Page configuration
-# --------------------------------
+# ------------------------------
+# PAGE CONFIG
+# ------------------------------
 
-st.set_page_config(page_title="Smart Crop AI", layout="centered")
+st.set_page_config(
+    page_title="Crop AI Assistant",
+    page_icon="🌱",
+    layout="centered",
+    initial_sidebar_state="collapsed"
+)
 
-st.title("🌱 Smart Crop Disease Assistant")
+# ------------------------------
+# HIDE STREAMLIT HEADER
+# ------------------------------
 
-st.write("Detect crop diseases and get fertilizer recommendation")
+st.markdown("""
+<style>
+#MainMenu {visibility:hidden;}
+footer {visibility:hidden;}
+header {visibility:hidden;}
 
-# --------------------------------
-# Language selection
-# --------------------------------
+body{
+background-color:#0f172a;
+}
 
-language = st.selectbox("Select Language", ["English","Hindi","Telugu"])
+.card{
+background:#1e293b;
+padding:15px;
+border-radius:10px;
+margin-top:10px;
+color:white;
+}
 
-# --------------------------------
-# Load Model
-# --------------------------------
+.title{
+text-align:center;
+font-size:28px;
+font-weight:bold;
+color:white;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# ------------------------------
+# TITLE
+# ------------------------------
+
+st.markdown("<div class='title'>🌱 Smart Crop AI Assistant</div>", unsafe_allow_html=True)
+
+st.write("Detect crop diseases and get fertilizer recommendations")
+
+# ------------------------------
+# LANGUAGE SELECTION
+# ------------------------------
+
+language = st.selectbox(
+    "🌍 Select Language",
+    ["English","Hindi","Telugu"]
+)
+
+# ------------------------------
+# GOOGLE GEMINI API
+# ------------------------------
+
+genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
+
+ai_model = genai.GenerativeModel("gemini-pro")
+
+# ------------------------------
+# LOAD CNN MODEL
+# ------------------------------
 
 @st.cache_resource
 def load_model():
+
     model = tf.keras.models.load_model("veg_model.h5")
+
     return model
 
 model = load_model()
 
-# --------------------------------
-# Image preprocessing
-# --------------------------------
+# ------------------------------
+# IMAGE PREPROCESS
+# ------------------------------
 
 def preprocess(img):
 
@@ -43,95 +98,122 @@ def preprocess(img):
 
     img = np.array(img)/255.0
 
-    img = np.expand_dims(img, axis=0)
+    img = np.expand_dims(img,axis=0)
 
     return img
 
-# --------------------------------
-# Image Input Option
-# --------------------------------
+# ------------------------------
+# IMAGE INPUT
+# ------------------------------
 
 st.subheader("📷 Capture or Upload Crop Leaf")
 
-camera_image = st.camera_input("Take a picture")
+camera = st.camera_input("Take Photo")
 
-upload_image = st.file_uploader("Upload leaf image", type=["jpg","png","jpeg"])
+upload = st.file_uploader("Upload Leaf Image", type=["jpg","png","jpeg"])
 
-image = None
+image=None
 
-if camera_image:
-    image = Image.open(camera_image)
+if camera:
+    image=Image.open(camera)
 
-elif upload_image:
-    image = Image.open(upload_image)
+elif upload:
+    image=Image.open(upload)
 
-# --------------------------------
-# Prediction
-# --------------------------------
+# ------------------------------
+# PREDICTION
+# ------------------------------
 
 if image:
 
-    st.image(image, caption="Selected Leaf Image", use_column_width=True)
+    st.image(image,caption="Leaf Image",use_column_width=True)
 
-    img = preprocess(image)
+    img=preprocess(image)
 
-    prediction = model.predict(img)
+    prediction=model.predict(img)
 
-    pred_class = np.argmax(prediction)
+    pred=np.argmax(prediction)
 
-    if pred_class == 0:
-        result = "Diseased"
+    if pred==0:
+        result="Diseased"
     else:
-        result = "Healthy"
+        result="Healthy"
 
     st.markdown(f"### 🌿 Prediction: {result}")
 
-# --------------------------------
-# Fertilizer Recommendation
-# --------------------------------
+# ------------------------------
+# FERTILIZER RECOMMENDATION
+# ------------------------------
 
-    fert = fertilizer_data[result]
+    fert=fertilizer_data[result]
 
-    st.markdown(f"### 🧪 Recommended Fertilizer: {fert['fertilizer_name']}")
+    st.markdown(f"""
+    <div class="card">
+    <h3>🧪 Recommended Fertilizer</h3>
+    <b>{fert['fertilizer_name']}</b>
+    </div>
+    """,unsafe_allow_html=True)
 
-    st.image(fert["image"], caption=fert["fertilizer_name"], width=250)
+    st.image(fert["image"],use_column_width=True)
 
-    dosage = fert["dosage"][language]
+    dosage=fert["dosage"][language]
 
-    st.markdown("### 📋 Dosage Instructions")
+    st.markdown(f"""
+    <div class="card">
+    <h4>📋 Instructions</h4>
+    {dosage}
+    </div>
+    """,unsafe_allow_html=True)
 
-    st.write(dosage)
-
-# --------------------------------
-# Voice Assistant
-# --------------------------------
+# ------------------------------
+# VOICE ASSISTANT
+# ------------------------------
 
     if st.button("🔊 Play Voice Guide"):
 
-        lang_code = {"English":"en","Hindi":"hi","Telugu":"te"}[language]
+        lang_code={"English":"en","Hindi":"hi","Telugu":"te"}[language]
 
-        tts = gTTS(text=dosage, lang=lang_code)
+        tts=gTTS(text=dosage,lang=lang_code)
 
-        tmp = tempfile.NamedTemporaryFile(delete=False)
+        tmp=tempfile.NamedTemporaryFile(delete=False)
 
         tts.save(tmp.name)
 
         st.audio(tmp.name)
 
-# --------------------------------
-# AI Chat Assistant
-# --------------------------------
+# ------------------------------
+# AI CHAT ASSISTANT
+# ------------------------------
 
 st.markdown("---")
 
-st.subheader("🧠 Crop AI Assistant")
+st.subheader("🧠 Ask Crop AI Assistant")
 
-question = st.text_input("Ask about crop diseases or fertilizers")
+if "messages" not in st.session_state:
+    st.session_state.messages=[]
 
-if question:
+for msg in st.session_state.messages:
 
-    response = "Maintain proper irrigation, monitor leaf spots regularly, and apply recommended fertilizers."
+    with st.chat_message(msg["role"]):
 
-    st.write("👨‍🌾 You:", question)
+        st.markdown(msg["content"])
 
-    st.write("🤖 Assistant:", response)
+prompt=st.chat_input("Ask about crop diseases, fertilizers or farming...")
+
+if prompt:
+
+    st.session_state.messages.append({"role":"user","content":prompt})
+
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    response=ai_model.generate_content(
+        f"You are an agricultural expert helping farmers. Answer simply: {prompt}"
+    )
+
+    answer=response.text
+
+    with st.chat_message("assistant"):
+        st.markdown(answer)
+
+    st.session_state.messages.append({"role":"assistant","content":answer})
