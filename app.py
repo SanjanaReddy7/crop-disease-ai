@@ -7,6 +7,12 @@ from fertilizer_data import fertilizer_data
 import tempfile
 import google.generativeai as genai
 
+# Add your API key here
+genai.configure(api_key="GOOGLE_API_KEY")
+
+# Load Gemini model
+ai_model = genai.GenerativeModel("gemini-1.5-pro-latest")
+
 # ------------------------------
 # PAGE CONFIG
 # ------------------------------
@@ -189,39 +195,56 @@ if image:
 
 # ------------------------------
 # AI CHAT ASSISTANT
-# ------------------------------
+# -----------------------------------
 
 st.markdown("---")
-
 st.subheader("🧠 Ask Crop AI Assistant")
 
+# Store chat history
 if "messages" not in st.session_state:
-    st.session_state.messages=[]
+    st.session_state.messages = []
 
+# Display previous messages
 for msg in st.session_state.messages:
-
     with st.chat_message(msg["role"]):
-
         st.markdown(msg["content"])
 
-prompt=st.chat_input("Ask about crop diseases, fertilizers or farming...")
+# Chat input
+prompt = st.chat_input("Ask about crops, diseases or fertilizers...")
 
 if prompt:
 
-    st.session_state.messages.append({"role":"user","content":prompt})
+    # Show user message
+    st.session_state.messages.append({"role": "user", "content": prompt})
 
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    response = ai_model.generate_content(
-    f"You are an agricultural expert helping farmers. Answer simply: {prompt}"
-)
+    try:
 
-answer = response.text
+        response = ai_model.generate_content(
+            f"""
+You are an expert agriculture assistant helping farmers.
 
-    answer=response.text
+Give clear and simple advice about:
+- crop diseases
+- fertilizers
+- pesticides
+- farming practices
 
+Question: {prompt}
+"""
+        )
+
+        answer = response.text
+
+    except Exception:
+        answer = "⚠️ AI assistant is temporarily unavailable."
+
+    # Show AI response
     with st.chat_message("assistant"):
         st.markdown(answer)
 
-    st.session_state.messages.append({"role":"assistant","content":answer})
+    st.session_state.messages.append(
+        {"role": "assistant", "content": answer}
+    )
