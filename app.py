@@ -79,7 +79,7 @@ import google.generativeai as genai
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
 # Load Gemini model
-ai_model = genai.GenerativeModel("gemini-1.5-flash")
+ai_model = genai.GenerativeModel("gemini-1.5-flash-latest")
 
 # ------------------------------
 # LOAD CNN MODEL
@@ -213,9 +213,11 @@ if prompt:
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    response=ai_model.generate_content(
-        f"You are an agricultural expert helping farmers. Answer simply: {prompt}"
-    )
+    response = ai_model.generate_content(
+    f"You are an agricultural expert helping farmers. Answer simply: {prompt}"
+)
+
+answer = response.text
 
     answer=response.text
 
