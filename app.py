@@ -71,9 +71,15 @@ language = st.selectbox(
 # GOOGLE GEMINI API
 # ------------------------------
 
+
+
+import google.generativeai as genai
+
+# Configure API
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
-ai_model = genai.GenerativeModel("gemini-pro")
+# Load Gemini model
+ai_model = genai.GenerativeModel("gemini-1.5-flash")
 
 # ------------------------------
 # LOAD CNN MODEL
