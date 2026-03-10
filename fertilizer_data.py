@@ -1,6 +1,6 @@
 fertilizer_data = {
 
-"Apple___Apple_Scab":{
+"Apple_Scab":{
 "fertilizer_name":"Copper Fungicide",
 "image":"fert_images/copper.jpg",
 "dosage":{
@@ -15,7 +15,7 @@ fertilizer_data = {
 }
 },
 
-"Apple___Healthy":{
+"Apple_Healthy":{
 "fertilizer_name":"Organic Compost",
 "image":"fert_images/compost.jpg",
 "dosage":{
@@ -30,7 +30,7 @@ fertilizer_data = {
 }
 },
 
-"Bell_Pepper___Bacterial_Spot":{
+"BellPepper_BacterialSpot":{
 "fertilizer_name":"Copper Bactericide",
 "image":"fert_images/copper.jpg",
 "dosage":{
@@ -45,7 +45,7 @@ fertilizer_data = {
 }
 },
 
-"Bell_Pepper___Healthy":{
+"BellPepper_Healthy":{
 "fertilizer_name":"NPK 10-10-10",
 "image":"fert_images/npk.jpg",
 "dosage":{
@@ -60,7 +60,7 @@ fertilizer_data = {
 }
 },
 
-"Cherry___Powdery_Mildew":{
+"Cherry_PowderyMildew":{
 "fertilizer_name":"Sulfur Fungicide",
 "image":"fert_images/sulfur.jpg",
 "dosage":{
@@ -75,7 +75,7 @@ fertilizer_data = {
 }
 },
 
-"Cherry___Healthy":{
+"Cherry_Healthy":{
 "fertilizer_name":"Organic Manure",
 "image":"fert_images/manure.jpg",
 "dosage":{
@@ -90,7 +90,7 @@ fertilizer_data = {
 }
 },
 
-"Corn_Maize___Common_Rust_":{
+"Corn_CommonRust":{
 "fertilizer_name":"Triazole Fungicide",
 "image":"fert_images/fungicide.jpg",
 "dosage":{
@@ -105,7 +105,7 @@ fertilizer_data = {
 }
 },
 
-"Corn_Maize___Healthy":{
+"Corn_Healthy":{
 "fertilizer_name":"Urea + Potash",
 "image":"fert_images/urea.jpg",
 "dosage":{
@@ -120,7 +120,7 @@ fertilizer_data = {
 }
 },
 
-"Grape___Black_Rot":{
+"Grape_BlackRot":{
 "fertilizer_name":"Mancozeb Fungicide",
 "image":"fert_images/mancozeb.jpg",
 "dosage":{
@@ -135,7 +135,7 @@ fertilizer_data = {
 }
 },
 
-"Grape___Healthy":{
+"Grape_Healthy":{
 "fertilizer_name":"Vermicompost",
 "image":"fert_images/vermicompost.jpg",
 "dosage":{
@@ -150,7 +150,7 @@ fertilizer_data = {
 }
 },
 
-"Peach___Bacterial_Spot":{
+"Peach_BacterialSpot":{
 "fertilizer_name":"Copper Spray",
 "image":"fert_images/copper.jpg",
 "dosage":{
@@ -165,7 +165,7 @@ fertilizer_data = {
 }
 },
 
-"Peach___Healthy":{
+"Peach_Healthy":{
 "fertilizer_name":"NPK 19-19-19",
 "image":"fert_images/npk.jpg",
 "dosage":{
@@ -180,7 +180,7 @@ fertilizer_data = {
 }
 },
 
-"Potato___Late_Blight":{
+"Potato_LateBlight":{
 "fertilizer_name":"Metalaxyl Fungicide",
 "image":"fert_images/fungicide.jpg",
 "dosage":{
@@ -195,7 +195,7 @@ fertilizer_data = {
 }
 },
 
-"Potato___Healthy":{
+"Potato_Healthy":{
 "fertilizer_name":"Potash Fertilizer",
 "image":"fert_images/potash.jpg",
 "dosage":{
@@ -210,7 +210,7 @@ fertilizer_data = {
 }
 },
 
-"Strawberry___Leaf_Scorch":{
+"Strawberry_LeafScorch":{
 "fertilizer_name":"Captan Fungicide",
 "image":"fert_images/fungicide.jpg",
 "dosage":{
@@ -225,7 +225,7 @@ fertilizer_data = {
 }
 },
 
-"Strawberry___Healthy":{
+"Strawberry_Healthy":{
 "fertilizer_name":"Organic Compost",
 "image":"fert_images/compost.jpg",
 "dosage":{
@@ -240,7 +240,7 @@ fertilizer_data = {
 }
 },
 
-"Tomato___Late_Blight":{
+"Tomato_LateBlight":{
 "fertilizer_name":"Chlorothalonil Fungicide",
 "image":"fert_images/fungicide.jpg",
 "dosage":{
@@ -255,7 +255,7 @@ fertilizer_data = {
 }
 },
 
-"Tomato___Healthy":{
+"Tomato_Healthy":{
 "fertilizer_name":"NPK 20-20-20",
 "image":"fert_images/npk.jpg",
 "dosage":{
