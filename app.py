@@ -136,17 +136,19 @@ def preprocess(img):
 # -------------------------
 # IMAGE UPLOAD
 # -------------------------
+st.subheader("📷 Capture or Upload Crop Leaf")
 
-st.subheader("📷 Upload Crop Leaf Image")
-
-upload = st.file_uploader(
-    "Upload Leaf Image",
-    type=["jpg","jpeg","png"]
-)
+camera = st.camera_input("Take Photo")
+upload = st.file_uploader("Upload Leaf Image", type=["jpg","jpeg","png"])
 
 image = None
 
-if upload:
+# If camera used
+if camera is not None:
+    image = Image.open(camera).convert("RGB")
+
+# If uploaded
+elif upload is not None:
     image = Image.open(upload).convert("RGB")
 
 # -------------------------
